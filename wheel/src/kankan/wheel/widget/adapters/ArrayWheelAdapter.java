@@ -37,6 +37,14 @@ public class ArrayWheelAdapter<T> extends AbstractWheelTextAdapter {
         //setEmptyItemResource(TEXT_VIEW_ITEM_RESOURCE);
         this.items = items;
     }
+
+    public ArrayWheelAdapter(Context context, T items[], int textSize) {
+        super(context);
+
+        //setEmptyItemResource(TEXT_VIEW_ITEM_RESOURCE);
+        this.items = items;
+        setTextSize(textSize);
+    }
     
     @Override
     public CharSequence getItemText(int index) {

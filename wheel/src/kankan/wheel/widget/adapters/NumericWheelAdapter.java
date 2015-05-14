@@ -28,10 +28,14 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
 
     /** The default max value */
     private static final int DEFAULT_MIN_VALUE = 0;
+
+    /** The default increment value */
+    private static final int DEFAULT_INCREMENT_VALUE = 1;
     
     // Values
     private int minValue;
     private int maxValue;
+    private int incrementValue;
     
     // format
     private String format;
@@ -41,7 +45,7 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
      * @param context the current context
      */
     public NumericWheelAdapter(Context context) {
-        this(context, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE);
+        this(context, DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, DEFAULT_INCREMENT_VALUE);
     }
 
     /**
@@ -51,7 +55,7 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
      * @param maxValue the wheel max value
      */
     public NumericWheelAdapter(Context context, int minValue, int maxValue) {
-        this(context, minValue, maxValue, null);
+        this(context, minValue, maxValue, DEFAULT_INCREMENT_VALUE, null);
     }
 
     /**
@@ -59,20 +63,33 @@ public class NumericWheelAdapter extends AbstractWheelTextAdapter {
      * @param context the current context
      * @param minValue the wheel min value
      * @param maxValue the wheel max value
+     * @param incrementValue the increment between each value
+     */
+    public NumericWheelAdapter(Context context, int minValue, int maxValue, int incrementValue) {
+        this(context, minValue, maxValue, incrementValue, null);
+    }
+
+    /**
+     * Constructor
+     * @param context the current context
+     * @param minValue the wheel min value
+     * @param maxValue the wheel max value
+     * @param incrementValue the increment between each value
      * @param format the format string
      */
-    public NumericWheelAdapter(Context context, int minValue, int maxValue, String format) {
+    public NumericWheelAdapter(Context context, int minValue, int maxValue, int incrementValue, String format) {
         super(context);
         
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.incrementValue = incrementValue;
         this.format = format;
     }
 
     @Override
     public CharSequence getItemText(int index) {
         if (index >= 0 && index < getItemsCount()) {
-            int value = minValue + index;
+            int value = minValue + index * incrementValue;
             return format != null ? String.format(format, value) : Integer.toString(value);
         }
         return null;

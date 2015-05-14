@@ -1,14 +1,19 @@
-Android-Wheel
-
-This project initially was a mirror from this repository :
-http://code.google.com/p/android-wheel/
+Android-IPhoneDateTimePicker
 
 Updates:
 
-* Add the ability to remove shadows.
-* Add the ability to color shadows.
-* Add the ability to change background and foreground drawables.
-* Added Holo Wheel example to the demo.
+Created a standalone DateTime widget that behaves like the one used in the standard iOS calendar.
+
+* Added a cycled method to the OnWheelChangedListener
+* Added a cycled method to the OnWheelChangedListener
 
 
 
+
+Android-Wheel
+
+This project initially was a mirror from this repository created by Yuri Kanivets:
+http://code.google.com/p/android-wheel/
+
+and then forked from this repository forked by Jeremy (maarek):
+https://github.com/maarek/android-wheel/

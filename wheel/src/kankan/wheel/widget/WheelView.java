@@ -273,6 +273,16 @@ public class WheelView extends View {
 	}
 
 	/**
+	 * Notifies listeners about cycle
+	 * @param cycleType the cycle type
+	 */
+	protected void notifyChangingListeners(CycleType cycleType) {
+		for (OnWheelChangedListener listener : changingListeners) {
+			listener.onCycled(this, cycleType);
+		}
+	}
+
+	/**
 	 * Adds wheel scrolling listener
 	 * @param listener the listener
 	 */
@@ -373,6 +383,11 @@ public class WheelView extends View {
 				}
 				scroll(itemsToScroll, 0);
 			} else {
+				if (scrollingOffset > 0 && index > currentItem)
+					notifyChangingListeners(CycleType.BACKWARD);
+				else if (scrollingOffset < 0 && index < currentItem)
+					notifyChangingListeners(CycleType.FORWARD);
+                    
 				scrollingOffset = 0;
 
 				int old = currentItem;
@@ -754,7 +769,7 @@ public class WheelView extends View {
 
 	/**
 	 * Scroll the wheel
-	 * @param itemsToSkip items to scroll
+	 * @param itemsToScroll items to scroll
 	 * @param time scrolling duration
 	 */
 	public void scroll(int itemsToScroll, int time) {

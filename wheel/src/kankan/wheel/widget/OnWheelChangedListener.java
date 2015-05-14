@@ -30,4 +30,11 @@ public interface OnWheelChangedListener {
 	 * @param newValue the new value of current item
 	 */
 	void onChanged(WheelView wheel, int oldValue, int newValue);
+    
+    /**
+	 * Callback method to be invoked when a wheel cycles
+	 * @param wheel the wheel view whose state cycled
+	 * @param cycleType the direction of the cycle
+	 */
+	void onCycled(WheelView wheelView, CycleType cycleType);
 }
