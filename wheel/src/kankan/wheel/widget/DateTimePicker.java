@@ -35,6 +35,8 @@ import java.util.Calendar;
  */
 public class DateTimePicker implements Serializable {
     public static final Integer[] EMPTY_INTEGER_OBJECT_ARRAY = new Integer[0];
+    private transient Animation _fadeInAnimation;
+    private transient Animation _fadeOutAnimation;
     private transient WheelView _dayMonth;
     private transient WheelView _month;
     private transient WheelView _year;
@@ -46,11 +48,12 @@ public class DateTimePicker implements Serializable {
     private Calendar _calendar;
     private boolean _allDay;
     private static final SimpleDateFormat stringDateFormatter = new SimpleDateFormat("EEE, MMM dd, yyyy");
+    private boolean _visible;
 
     public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar) {
         if (activity == null)
             return;
-        
+
         _timeFrameView = timeFrameView;
 
         _dayMonth = (WheelView) _timeFrameView.findViewById(R.id.day_month);
@@ -125,7 +128,26 @@ public class DateTimePicker implements Serializable {
         _minute.setCurrentItem(curYear);
         _minute.setCyclic(true);
         _minute.setDrawShadows(false);
-        
+
+        _fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fadein);
+
+        _fadeOutAnimation = AnimationUtils.loadAnimation(activity, R.anim.fadeout);
+        _fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                _timeFrameView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     public void setAllDay(boolean allDay){
@@ -137,6 +159,13 @@ public class DateTimePicker implements Serializable {
         _day.setVisibility(allDay ? View.VISIBLE : View.GONE);
         _month.setVisibility(allDay ? View.VISIBLE : View.GONE);
         _year.setVisibility(allDay ? View.VISIBLE : View.GONE);
+    }
+
+    public void slide(final boolean visible) {
+        if (visible)
+            _timeFrameView.setVisibility(View.VISIBLE);
+        
+        _timeFrameView.startAnimation(visible ? _fadeInAnimation : _fadeOutAnimation);
     }
 
     private String[] generateDayMonthArray() {
@@ -196,15 +225,7 @@ public class DateTimePicker implements Serializable {
         return _minute.getCurrentItem();
     }
 
-    @Override
-    public String toString() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.clear();
-        calendar.set(getSelectedYear(), getSelectedMonth(), getSelectedDay(), getSelectedHour(), getSelectedMinute());
-        return stringDateFormatter.format(calendar);
-    }
-
-    public static Integer[] integerToObject(int[] array) {
+    private static Integer[] integerToObject(int[] array) {
         if (array == null) {
             return null;
         } else if (array.length == 0) {
@@ -217,27 +238,11 @@ public class DateTimePicker implements Serializable {
         return result;
     }
 
-    public void slide(boolean visible) {
-        if (visible) {
-            _timeFrameView.setVisibility(View.VISIBLE);
-            _timeFrameView.setAlpha(0.0f);
-
-            _timeFrameView.animate()
-                    .translationY(_timeFrameView.getHeight())
-                    .alpha(1.0f);
-        }
-        else {
-            _timeFrameView.setAlpha(0.0f);
-
-            _timeFrameView.animate()
-                    .translationY(0)
-                    .alpha(1.0f).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            _timeFrameView.setVisibility(View.GONE);
-                        }
-                    });
-        }
-
+    @Override
+    public String toString() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(getSelectedYear(), getSelectedMonth(), getSelectedDay(), getSelectedHour(), getSelectedMinute());
+        return stringDateFormatter.format(calendar.getTime());
     }
 }
