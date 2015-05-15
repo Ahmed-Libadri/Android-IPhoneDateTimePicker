@@ -19,49 +19,83 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/date_wheel_layout"
-    android:layout_height="wrap_content"
     android:layout_width="fill_parent"
-    android:layout_gravity="center_horizontal"
-    android:paddingLeft="12dp"
-    android:paddingRight="12dp"
-    android:paddingTop="30dp"
-    android:weightSum="1">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <kankan.wheel.widget.WheelView android:id="@+id/day_month"
+    <LinearLayout
+        android:id="@+id/time_frame_header"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.45" />
+        android:padding="12dp"
+        android:weightSum="1">
 
-    <kankan.wheel.widget.WheelView android:id="@+id/month"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.50"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/time_frame_header_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:text="@string/starts" />
 
-    <kankan.wheel.widget.WheelView android:id="@+id/day"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.25"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/time_frame_date_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:paddingLeft="27dp"
+            android:paddingStart="27dp"
+            android:paddingRight="27dp"
+            android:paddingEnd="27dp"
+            android:gravity="end"/>
 
-    <kankan.wheel.widget.WheelView android:id="@+id/year"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.25"
-        android:visibility="gone"/>
+    </LinearLayout>
 
-    <kankan.wheel.widget.WheelView android:id="@+id/hour"
+    <LinearLayout
+        android:id="@+id/time_frame_date_wheel"
         android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.25"/>
+        android:layout_width="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="30dp"
+        android:weightSum="1">
 
-    <kankan.wheel.widget.WheelView android:id="@+id/minute"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.15"/>
+        <kankan.wheel.widget.WheelView android:id="@+id/day_month"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.45" />
 
-    <kankan.wheel.widget.WheelView android:id="@+id/period"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        android:layout_weight="0.15"/>
+        <kankan.wheel.widget.WheelView android:id="@+id/month"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.50"
+            android:visibility="gone" />
+
+        <kankan.wheel.widget.WheelView android:id="@+id/day"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:visibility="gone" />
+
+        <kankan.wheel.widget.WheelView android:id="@+id/year"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"
+            android:visibility="gone"/>
+
+        <kankan.wheel.widget.WheelView android:id="@+id/hour"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.25"/>
+
+        <kankan.wheel.widget.WheelView android:id="@+id/minute"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"/>
+
+        <kankan.wheel.widget.WheelView android:id="@+id/period"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.15"/>
+    </LinearLayout>
 </LinearLayout>
