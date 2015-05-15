@@ -35,6 +35,8 @@ import java.util.Calendar;
  */
 public class DateTimePicker implements Serializable {
     public static final Integer[] EMPTY_INTEGER_OBJECT_ARRAY = new Integer[0];
+    private static final int DEFAULT_MINUTE_INCREMENT = 5;
+    private int _minuteIncrement = DEFAULT_MINUTE_INCREMENT;
     private transient Animation _fadeInAnimation;
     private transient Animation _fadeOutAnimation;
     private transient View _timeFrameDateWheelView;
@@ -54,7 +56,7 @@ public class DateTimePicker implements Serializable {
     private boolean _allDay;
     private int _additionalYearsToPopulate = 1;
 
-    public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header, int numberOfAdditionalYearsToPopulate) {
+    public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header, int minuteIncrement, int numberOfAdditionalYearsToPopulate) {
         if (activity == null)
             return;
 
@@ -70,6 +72,7 @@ public class DateTimePicker implements Serializable {
         _timeFrameDateTextView = (TextView) timeFrameView.findViewById(R.id.time_frame_date_text);
         _timeFrameDateWheelView = timeFrameView.findViewById(R.id.time_frame_date_wheel);
         _additionalYearsToPopulate = numberOfAdditionalYearsToPopulate;
+        _minuteIncrement = minuteIncrement;
 
         timeFrameHeaderTextView.setText(header);
         _timeFrameDateWheelView.setVisibility(View.GONE);
@@ -217,14 +220,14 @@ public class DateTimePicker implements Serializable {
         });
 
         // minute
-        _minute.setViewAdapter(new DateNumericAdapter(activity, 0, 59, 5, 0));
+        _minute.setViewAdapter(new DateNumericAdapter(activity, 0, 11, _minuteIncrement, 0));
         _minute.setCurrentItem(curYear);
         _minute.setCyclic(true);
         _minute.setDrawShadows(false);
         _minute.addChangingListener(new OnWheelChangedListener() {
             @Override
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                _resultCalendar.set(Calendar.MINUTE, newValue);
+                _resultCalendar.set(Calendar.MINUTE, newValue * _minuteIncrement);
                 updateTimeFrameText();
             }
 
