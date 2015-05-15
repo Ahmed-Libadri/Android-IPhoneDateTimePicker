@@ -57,12 +57,12 @@ public class DateTimePicker implements Serializable {
     private int _additionalYearsToPopulate;
     private int _minuteIncrement;
 
-    public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header) {
-        this(activity, timeFrameView, calendar, header, DEFAULT_MINUTE_INCREMENT, DEFAULT_ADDITIONAL_YEARS_TO_POPULATE);
+    public DateTimePicker(final Context context, View timeFrameView, Calendar calendar, String header) {
+        this(context, timeFrameView, calendar, header, DEFAULT_MINUTE_INCREMENT, DEFAULT_ADDITIONAL_YEARS_TO_POPULATE);
     }
 
-    public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header, int minuteIncrement, int numberOfAdditionalYearsToPopulate) {
-        if (activity == null)
+    public DateTimePicker(final Context context, View timeFrameView, Calendar calendar, String header, int minuteIncrement, int numberOfAdditionalYearsToPopulate) {
+        if (context == null)
             return;
 
         View timeFrameHeaderView = timeFrameView.findViewById(R.id.time_frame_header);
@@ -94,7 +94,7 @@ public class DateTimePicker implements Serializable {
 
         OnWheelChangedListener dayListener = new OnWheelChangedListener() {
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
-                updateDays(activity, _year, _month, _day);
+                updateDays(context, _year, _month, _day);
             }
 
             @Override
@@ -115,8 +115,8 @@ public class DateTimePicker implements Serializable {
 
         // month
         int curMonth = _initialCalendar.get(Calendar.MONTH);
-        String months[] = activity.getResources().getStringArray(R.array.month_array);
-        _month.setViewAdapter(new DateArrayAdapter(activity, months, curMonth));
+        String months[] = context.getResources().getStringArray(R.array.month_array);
+        _month.setViewAdapter(new DateArrayAdapter(context, months, curMonth));
         _month.setCurrentItem(curMonth);
         _month.setDrawShadows(false);
         _month.addChangingListener(dayListener);
@@ -137,7 +137,7 @@ public class DateTimePicker implements Serializable {
         int dayOfMonth = _initialCalendar.get(Calendar.DAY_OF_MONTH);
         String dayMonthArray[] = generateDayMonthArray();
         _dayMonth.setDrawShadows(false);
-        _dayMonth.setViewAdapter(new ArrayWheelAdapter<>(activity, dayMonthArray, 16));
+        _dayMonth.setViewAdapter(new ArrayWheelAdapter<>(context, dayMonthArray, 16));
         _dayMonth.addChangingListener(new OnWheelChangedListener() {
             @Override
             public void onChanged(WheelView wheel, int oldValue, int newValue) {
@@ -155,7 +155,7 @@ public class DateTimePicker implements Serializable {
 
         // year
         int curYear = _initialCalendar.get(Calendar.YEAR);
-        _year.setViewAdapter(new DateNumericAdapter(activity, curYear, curYear + _additionalYearsToPopulate, 0));
+        _year.setViewAdapter(new DateNumericAdapter(context, curYear, curYear + _additionalYearsToPopulate, 0));
         _year.setCurrentItem(curYear);
         _year.setDrawShadows(false);
         _year.addChangingListener(dayListener);
@@ -173,7 +173,7 @@ public class DateTimePicker implements Serializable {
         });
 
         // day
-        updateDays(activity, _year, _month, _day);
+        updateDays(context, _year, _month, _day);
         _day.setCurrentItem(dayOfMonth - 1);
         _day.setDrawShadows(false);
         _day.addChangingListener(new OnWheelChangedListener() {
@@ -190,7 +190,7 @@ public class DateTimePicker implements Serializable {
         });
 
         // period
-        _period.setViewAdapter(new ArrayWheelAdapter<>(activity, activity.getResources().getStringArray(R.array.period_array), 16));
+        _period.setViewAdapter(new ArrayWheelAdapter<>(context, context.getResources().getStringArray(R.array.period_array), 16));
         _period.setDrawShadows(false);
         _period.addChangingListener(new OnWheelChangedListener() {
             @Override
@@ -206,7 +206,7 @@ public class DateTimePicker implements Serializable {
         });
 
         // hour
-        _hour.setViewAdapter(new ArrayWheelAdapter<>(activity, integerToObject(activity.getResources().getIntArray(R.array.hour_array)), 16));
+        _hour.setViewAdapter(new ArrayWheelAdapter<>(context, integerToObject(context.getResources().getIntArray(R.array.hour_array)), 16));
         _hour.setCurrentItem(curYear);
         _hour.setCyclic(true);
         _hour.setDrawShadows(false);
@@ -225,7 +225,7 @@ public class DateTimePicker implements Serializable {
         });
 
         // minute
-        _minute.setViewAdapter(new DateNumericAdapter(activity, 0, 11, _minuteIncrement, 0));
+        _minute.setViewAdapter(new DateNumericAdapter(context, 0, 11, _minuteIncrement, 0));
         _minute.setCurrentItem(curYear);
         _minute.setCyclic(true);
         _minute.setDrawShadows(false);
@@ -242,9 +242,9 @@ public class DateTimePicker implements Serializable {
             }
         });
 
-        _fadeInAnimation = AnimationUtils.loadAnimation(activity, R.anim.fadein);
+        _fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fadein);
 
-        _fadeOutAnimation = AnimationUtils.loadAnimation(activity, R.anim.fadeout);
+        _fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fadeout);
         _fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -267,7 +267,7 @@ public class DateTimePicker implements Serializable {
             public void onClick(View v) {
                 _timeFrameHeaderClicked = !_timeFrameHeaderClicked;
                 slide(_timeFrameHeaderClicked);
-                _timeFrameDateTextView.setTextColor(_timeFrameHeaderClicked ? activity.getResources().getColor(R.color.color_red) : activity.getResources().getColor(R.color.color_black));
+                _timeFrameDateTextView.setTextColor(_timeFrameHeaderClicked ? context.getResources().getColor(R.color.color_red) : context.getResources().getColor(R.color.color_black));
                 updateTimeFrameText();
 
             }
@@ -332,13 +332,13 @@ public class DateTimePicker implements Serializable {
     /**
      * Updates day wheel. Sets max days according to selected month and year
      */
-    private void updateDays(Activity activity, WheelView year, WheelView month, WheelView day) {
+    private void updateDays(Context context, WheelView year, WheelView month, WheelView day) {
         Calendar calendar = (Calendar) _initialCalendar.clone();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + year.getCurrentItem());
         calendar.set(Calendar.MONTH, month.getCurrentItem());
 
         int maxDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        day.setViewAdapter(new DateNumericAdapter(activity, 1, maxDays, calendar.get(Calendar.DAY_OF_MONTH) - 1));
+        day.setViewAdapter(new DateNumericAdapter(context, 1, maxDays, calendar.get(Calendar.DAY_OF_MONTH) - 1));
         int curDay = Math.min(maxDays, day.getCurrentItem() + 1);
         day.setCurrentItem(curDay - 1, true);
     }
@@ -372,3 +372,4 @@ public class DateTimePicker implements Serializable {
         return _allDay ? allDayDateFormatter.format(_resultCalendar.getTime()) : dateTimeFormatter.format(_resultCalendar.getTime());
     }
 }
+
