@@ -36,7 +36,7 @@ import java.util.Calendar;
 public class DateTimePicker implements Serializable {
     public static final Integer[] EMPTY_INTEGER_OBJECT_ARRAY = new Integer[0];
     private static final int DEFAULT_MINUTE_INCREMENT = 5;
-    private int _minuteIncrement = DEFAULT_MINUTE_INCREMENT;
+    private static final int DEFAULT_ADDITIONAL_YEARS_TO_POPULATE = 1;
     private transient Animation _fadeInAnimation;
     private transient Animation _fadeOutAnimation;
     private transient View _timeFrameDateWheelView;
@@ -54,7 +54,12 @@ public class DateTimePicker implements Serializable {
     private static final SimpleDateFormat allDayDateFormatter = new SimpleDateFormat("EEE, MMM dd, yyyy", Locale.US);
     private boolean _timeFrameHeaderClicked;
     private boolean _allDay;
-    private int _additionalYearsToPopulate = 1;
+    private int _additionalYearsToPopulate;
+    private int _minuteIncrement;
+
+    public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header) {
+        this(activity, timeFrameView, calendar, header, DEFAULT_MINUTE_INCREMENT, DEFAULT_ADDITIONAL_YEARS_TO_POPULATE);
+    }
 
     public DateTimePicker(final Activity activity, View timeFrameView, Calendar calendar, String header, int minuteIncrement, int numberOfAdditionalYearsToPopulate) {
         if (activity == null)
